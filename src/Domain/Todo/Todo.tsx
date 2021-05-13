@@ -8,31 +8,45 @@ let initial_todos: Todo[] = [
   },
   {
     name: "walk home",
-    completed: true,
+    completed: false,
   },
 ];
 
 const TodoComponent = () => {
-    let [todos, setTodos] = React.useState<Todo[]>(initial_todos);
+    let [todos, setTodos] = React.useState<Todo[] | []>(initial_todos);
+
+        const completeChangeHandler = (
+          e: React.ChangeEvent<HTMLInputElement>
+        ) => {
+          console.log(e.target.name);
+        };
 
      
     return (
         <div style={{ margin: "30px", padding: "20px", background: "aqua"}}>
-            <TodoList todos = {todos} />
+            <TodoList
+                todos={todos}
+                onCompleteChange={completeChangeHandler}
+            />
         </div>
     )
 }
 
 type ITodoListProp = {
-    todos: Todo[]
-}
-const TodoList = ({ todos }: ITodoListProp) => {
+  todos: Todo[];
+  onCompleteChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+const TodoList = ({ todos, onCompleteChange }: ITodoListProp) => {
   console.log("Todo list props", todos);
 
   return (
     <div>
       {todos.map((todo: Todo, index: any) => (
-          <TodoItem key={index} todo={todo} />
+        <TodoItem
+          key={index}
+          todo={todo}
+          onCompleteChange={onCompleteChange}
+        />
       ))}
     </div>
   );
@@ -41,12 +55,21 @@ const TodoList = ({ todos }: ITodoListProp) => {
 
 type ITodoItemProp = {
     todo: Todo
+    onCompleteChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
-const TodoItem = ({todo}: ITodoItemProp) => (
-    <div>
-        <span>{todo.name}</span>
-        <input type="checkbox" checked={todo.completed} />
-    </div>
-)
+const TodoItem = ({ todo, onCompleteChange }: ITodoItemProp) => {
+
+    return (
+        <div>
+            <span>{todo.name}</span>
+            <input
+                type="checkbox"
+                name="completionToggle"
+                checked={todo.completed}
+                onChange={onCompleteChange}
+            />
+        </div>
+    )
+}
 
 export default TodoComponent;
