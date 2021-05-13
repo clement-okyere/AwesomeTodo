@@ -16,7 +16,8 @@ let initial_todos: Todo[] = [
 ];
 
 const TodoComponent = () => {
-    let [todos, setTodos] = React.useState<Todo[]>(initial_todos);
+    let [todos, setTodos] = React.useState<Todo[] | []>(initial_todos);
+    let [newTodo, setNewTodo] = React.useState<string>("");
 
         const completeChangeHandler = (id: string| number) => {
             const updatedTodo: Todo[] = todos.map((todo: Todo) => {
@@ -27,17 +28,36 @@ const TodoComponent = () => {
             })
 
             setTodos(updatedTodo)   
-        };
+    };
+    
+    const todoInputChangehandler = (e: React.FormEvent<HTMLInputElement>) => {
+        console.log(e.target.value);
+        setNewTodo(e.target.value);
+    }
+
+    const addTodohandler = (e: React.FormEvent<HTMLInputElement>) => {
+        let lastTodoId = todos.length;
+         let lastTodo: Todo = {
+             id: lastTodoId += 1,
+             name: newTodo,
+             completed: false
+         }
+         
+        let updateTodos = [...todos, lastTodo]
+        setTodos(updateTodos);
+        setNewTodo("");
+     };
 
      
     return (
-        <div style={{ margin: "30px", padding: "20px", background: "aqua"}}>
-            <TodoList
-                todos={todos}
-                onCompleteChange={completeChangeHandler}
-            />
-        </div>
-    )
+        <div style={{ margin: "30px", padding: "20px", background: "aqua" }}>
+            <label htmlFor="todo">Todo:</label>
+            <input type="text" id="todo" onChange={todoInputChangehandler} />
+            <button type="button" onClick={addTodohandler}>Add</button>
+
+        <TodoList todos={todos} onCompleteChange={completeChangeHandler} />
+      </div>
+    );
 }
 
 type ITodoListProp = {
