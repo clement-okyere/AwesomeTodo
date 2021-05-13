@@ -68,16 +68,16 @@ type ITodoItemProp = {
 const TodoItem = ({ todo, onCompleteChange }: ITodoItemProp) => {
 
     return (
-        <div>
-            <span>{todo.name}</span>
-            <input
-                type="checkbox"
-                name="completionToggle"
-                checked={todo.completed}
-                onChange={() => onCompleteChange(todo.id)}
-            />
-        </div>
-    )
+      <div style={{ textDecorationLine: `${todo.completed ? "line-through" : "none"}`}}>
+        <span>{todo.name}</span>
+        <input
+          type="checkbox"
+          name="completionToggle"
+          checked={todo.completed}
+          onChange={() => onCompleteChange(todo.id)}
+        />
+      </div>
+    );
 }
 
 export default TodoComponent;
