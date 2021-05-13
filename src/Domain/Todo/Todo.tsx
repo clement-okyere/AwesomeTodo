@@ -1,24 +1,32 @@
 import React from 'react';
-import {Todo } from '../../utils/types'
+import { Todo } from '../../utils/types';
+//import { uuid } from "uuidv4";
 
 let initial_todos: Todo[] = [
     {
+    id: 0,
     name: "make coffe",
     completed: false,
   },
-  {
+    {
+    id: 1,
     name: "walk home",
     completed: false,
   },
 ];
 
 const TodoComponent = () => {
-    let [todos, setTodos] = React.useState<Todo[] | []>(initial_todos);
+    let [todos, setTodos] = React.useState<Todo[]>(initial_todos);
 
-        const completeChangeHandler = (
-          e: React.ChangeEvent<HTMLInputElement>
-        ) => {
-          console.log(e.target.name);
+        const completeChangeHandler = (id: string| number) => {
+            const updatedTodo: Todo[] = todos.map((todo: Todo) => {
+                if (todo.id === id)
+                    return { ...todo, completed: !todo.completed };
+                
+                return todo;      
+            })
+
+            setTodos(updatedTodo)   
         };
 
      
@@ -34,7 +42,7 @@ const TodoComponent = () => {
 
 type ITodoListProp = {
   todos: Todo[];
-  onCompleteChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onCompleteChange: (id: string | number) => void;
 };
 const TodoList = ({ todos, onCompleteChange }: ITodoListProp) => {
   console.log("Todo list props", todos);
@@ -45,7 +53,7 @@ const TodoList = ({ todos, onCompleteChange }: ITodoListProp) => {
         <TodoItem
           key={index}
           todo={todo}
-          onCompleteChange={onCompleteChange}
+          onCompleteChange={() => onCompleteChange(todo.id)}
         />
       ))}
     </div>
@@ -55,7 +63,7 @@ const TodoList = ({ todos, onCompleteChange }: ITodoListProp) => {
 
 type ITodoItemProp = {
     todo: Todo
-    onCompleteChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    onCompleteChange: (id: string | number) => void
 }
 const TodoItem = ({ todo, onCompleteChange }: ITodoItemProp) => {
 
@@ -66,7 +74,7 @@ const TodoItem = ({ todo, onCompleteChange }: ITodoItemProp) => {
                 type="checkbox"
                 name="completionToggle"
                 checked={todo.completed}
-                onChange={onCompleteChange}
+                onChange={() => onCompleteChange(todo.id)}
             />
         </div>
     )
