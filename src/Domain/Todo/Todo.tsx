@@ -30,23 +30,23 @@ const TodoComponent = () => {
             setTodos(updatedTodo)   
     };
     
-    const todoInputChangehandler = (e: React.FormEvent<HTMLInputElement>) => {
-        console.log(e.target.value);
+  const todoInputChangehandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+      console.log(e.target.value)
         setNewTodo(e.target.value);
     }
 
-    const addTodohandler = (e: React.FormEvent<HTMLInputElement>) => {
-        let lastTodoId = todos.length;
-         let lastTodo: Todo = {
-             id: lastTodoId += 1,
-             name: newTodo,
-             completed: false
-         }
-         
-        let updateTodos = [...todos, lastTodo]
-        setTodos(updateTodos);
-        setNewTodo("");
-     };
+    const addTodohandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+      let lastTodoId = todos.length;
+      let lastTodo: Todo = {
+        id: (lastTodoId += 1),
+        name: newTodo,
+        completed: false,
+      };
+
+      let updateTodos = [...todos, lastTodo];
+      setTodos(updateTodos);
+      setNewTodo("");
+    };
 
      
     return (
