@@ -1,5 +1,7 @@
 import React from 'react';
 import { Todo } from '../../utils/types';
+import { todoValidationSchema } from '../../utils/schema';
+import { useFormik } from 'formik';
 //import { uuid } from "uuidv4";
 
 let initial_todos: Todo[] = [
@@ -17,7 +19,6 @@ let initial_todos: Todo[] = [
 
 const TodoComponent = () => {
     let [todos, setTodos] = React.useState<Todo[] | []>(initial_todos);
-    let [newTodo, setNewTodo] = React.useState<string>("");
 
         const completeChangeHandler = (id: string| number) => {
             const updatedTodo: Todo[] = todos.map((todo: Todo) => {
@@ -30,30 +31,50 @@ const TodoComponent = () => {
             setTodos(updatedTodo)   
     };
     
-  const todoInputChangehandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log(e.target.value)
-        setNewTodo(e.target.value);
-    }
-
-    const addTodohandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-      let lastTodoId = todos.length;
-      let lastTodo: Todo = {
-        id: (lastTodoId += 1),
-        name: newTodo,
+    const formik = useFormik({
+      initialValues: {
+        name: "",
         completed: false,
-      };
+      },
+      validationSchema: todoValidationSchema,
+      onSubmit: (values, {resetForm}) => {
+         let lastTodoId = todos.length;
+         let lastTodo: Todo = {
+           id: (lastTodoId += 1),
+           name: values.name,
+           completed: false,
+         };
 
-      let updateTodos = [...todos, lastTodo];
-      setTodos(updateTodos);
-      setNewTodo("");
-    };
-
+         let updateTodos = [...todos, lastTodo];
+         setTodos(updateTodos);
+        resetForm();
+      },
+    });
      
     return (
-        <div style={{ margin: "30px", padding: "20px", background: "aqua" }}>
-            <label htmlFor="todo">Todo:</label>
-            <input type="text" id="todo" onChange={todoInputChangehandler} />
-            <button type="button" onClick={addTodohandler}>Add</button>
+      <div style={{ margin: "30px", padding: "20px", background: "aqua" }}>
+        <form onSubmit={formik.handleSubmit}>
+          <label htmlFor="todo">Todo:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.name}
+          />
+
+          {formik.touched.name && formik.errors.name ? (
+            <div>{formik.errors.name}</div>
+          ) : null}
+
+          <button
+            disabled={!(formik.isValid && formik.dirty)}
+            type="submit"
+            >
+            Add
+          </button>
+        </form>
 
         <TodoList todos={todos} onCompleteChange={completeChangeHandler} />
       </div>
@@ -65,7 +86,7 @@ type ITodoListProp = {
   onCompleteChange: (id: string | number) => void;
 };
 const TodoList = ({ todos, onCompleteChange }: ITodoListProp) => {
-  console.log("Todo list props", todos);
+
 
   return (
     <div>
@@ -86,8 +107,8 @@ type ITodoItemProp = {
     onCompleteChange: (id: string | number) => void
 }
 const TodoItem = ({ todo, onCompleteChange }: ITodoItemProp) => {
-
-    return (
+   
+  return (
       <div style={{ textDecorationLine: `${todo.completed ? "line-through" : "none"}`}}>
         <span>{todo.name}</span>
         <input
