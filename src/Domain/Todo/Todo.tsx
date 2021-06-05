@@ -2,10 +2,11 @@ import React from 'react';
 import { Todo } from '../../utils/types';
 import { todoValidationSchema } from '../../utils/schema';
 import { useFormik } from 'formik';
+import axios from "axios";
 //import { uuid } from "uuidv4";
 
 type todoState = {
-  todo: Todo[],
+  todo: Todo[] | [],
   loading: boolean
 };
 
@@ -25,19 +26,30 @@ let initial_todos: Todo[] = [
 
 type INITIAL_LOAD = {
   type: "INIT_LOAD";
-  payload: todoState;
+};
+
+
+type LOAD_DATA = {
+  type: "LOAD_DATA",
+  payload: todoState
 };
 
 type DONE_LOAD = {
   type: "DONE_LOAD";
 };
 
-type Action = INITIAL_LOAD | DONE_LOAD;
+type Action = INITIAL_LOAD | LOAD_DATA | DONE_LOAD;
 
 const reducer = (state: todoState, action: Action) => {
   switch (action.type) {
     case "INIT_LOAD":
-      console.log("init run");
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case "LOAD_DATA":
+      console.log("data from api", action.payload)
       return {
         ...action.payload,
         loading: true,
@@ -54,27 +66,48 @@ const reducer = (state: todoState, action: Action) => {
 const TodoComponent = () => {
   let [todo, dispatch] = React.useReducer(reducer, {
     todo: [],
-    loading: false
+    loading: false,
   });
 
+  const fetchTodos = async () => {
+    try {
+       dispatch({
+         type: "INIT_LOAD"
+       });     
+      const {data} = await axios.get("http://localhost:3001/api/todos");
+      
+      //update todoState with data from api
+      const todos: Todo[] = data.map((todo) => {
+        return {
+          completed: todo.completed,
+          name: todo.name,
+          id: todo._id
+        }
+      })
+
+       dispatch({
+         type: "LOAD_DATA",
+         payload: {
+           todo: todos,
+           loading: true
+         }
+       });    
+ 
+
+       dispatch({
+         type: "DONE_LOAD",
+       });
+    }
+    catch (err) {
+      dispatch({
+        type: "DONE_LOAD",
+      });
+      console.log("An error occurred", err);
+    }
+  }
+
   React.useEffect(() => {
-    dispatch({
-      payload: {
-        todo: [],
-        loading: true
-      },
-      type: "INIT_LOAD"
-    });
-
-    setTimeout(() => {
-      console.log("set time out running")
-        dispatch({
-          type: "DONE_LOAD",
-        });
-    }, 3000);
-
-
-
+    fetchTodos();
   }, []);
 
   const completeChangeHandler = (id: string| number) => {
