@@ -3,7 +3,6 @@ import { Todo } from '../../utils/types';
 import { todoValidationSchema } from '../../utils/schema';
 import { useFormik } from 'formik';
 import axios from "axios";
-//import { uuid } from "uuidv4";
 
 const API_URL = "http://localhost:3001/api/todos";
 
