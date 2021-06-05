@@ -29,10 +29,17 @@ type DONE_LOAD = {
   type: "DONE_LOAD";
 };
 
+type DELETE_TODO = {
+  type: "DELETE_TODO";
+  payload: todoState
+};
+
 type Action = INITIAL_LOAD
               | LOAD_DATA
               | DONE_LOAD
-              | ADD_TODO;
+              | ADD_TODO
+              | DELETE_TODO
+              
 
 const reducer = (state: todoState, action: Action) => {
   switch (action.type) {
@@ -52,7 +59,7 @@ const reducer = (state: todoState, action: Action) => {
     case "ADD_TODO":
       console.log("data from api", action.payload);
       return {
-        ...action.payload
+        ...action.payload,
       };
 
     case "DONE_LOAD":
@@ -60,6 +67,15 @@ const reducer = (state: todoState, action: Action) => {
         ...state,
         loading: false,
       };
+
+    case "DELETE_TODO":
+      return {
+        ...state,
+        loading: false,
+      };
+    
+    default:
+      throw new Error("wrong aurgument error");
   }
 }
 
@@ -85,10 +101,32 @@ const TodoComponent = () => {
     catch (err) {
       console.log("An error occurred", err);
     }
-
-
   }
 
+  const toggleTodoCompleteHandler = async (id: string) => {
+    try {
+      await axios.put(`${API_URL}/${id}/complete`);
+      //update state if successful
+      const updateTodos = todo.todo.map((elem: Todo) => {
+        if (elem.id === id)
+          return {
+            ...elem,
+            completed: !elem.completed
+          };
+        
+        return elem;
+      })
+      dispatch({
+        type: "ADD_TODO",
+        payload: {
+          todo: updateTodos,
+          loading: false,
+        },
+      });
+    } catch (err) {
+      console.log("An error occurred", err);
+    }
+  };
 
   const fetchTodos = async () => {
     try {
@@ -131,80 +169,67 @@ const TodoComponent = () => {
     fetchTodos();
   }, []);
 
-  const completeChangeHandler = (id?: string| number) => {
-      // const updatedTodo: Todo[] = todos.map((todo: Todo) => {
-      //     if (todo.id === id)
-      //         return { ...todo, completed: !todo.completed };
-          
-      //     return todo;      
-      // })
-
-      // setTodos(updatedTodo)   
-  };
     
-    const formik = useFormik({
-      initialValues: {
-        name: "",
-        completed: false,
-      },
-      validationSchema: todoValidationSchema,
-      onSubmit: async (values, { resetForm,setSubmitting }) => {
-        try {
-          setSubmitting(true)
-          const { name, completed } = values;
-          await addTodoHandler({ name, completed })
-          setSubmitting(false);
-          resetForm();
-        }
-        catch (err) {
-          setSubmitting(false);
-          console.log("err", err);
-        }
-      },
-    });
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      completed: false,
+    },
+    validationSchema: todoValidationSchema,
+    onSubmit: async (values, { resetForm,setSubmitting }) => {
+      try {
+        setSubmitting(true)
+        const { name, completed } = values;
+        await addTodoHandler({ name, completed })
+        setSubmitting(false);
+        resetForm();
+      }
+      catch (err) {
+        setSubmitting(false);
+        console.log("err", err);
+      }
+    },
+  });
      
   return (
     <>
-    
-        <div style={{ margin: "30px", padding: "20px", background: "aqua" }}>
-          <form onSubmit={formik.handleSubmit}>
-            <label htmlFor="todo">Todo:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.name}
-            />
+      <div style={{ margin: "30px", padding: "20px", background: "aqua" }}>
+        <form onSubmit={formik.handleSubmit}>
+          <label htmlFor="todo">Todo:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.name}
+          />
 
-            {formik.touched.name && formik.errors.name ? (
-              <div>{formik.errors.name}</div>
-            ) : null}
+          {formik.touched.name && formik.errors.name ? (
+            <div>{formik.errors.name}</div>
+          ) : null}
 
-            <button disabled={!(formik.isValid && formik.dirty)} type="submit">
-              Add {formik.isSubmitting ?  " adding new todo...": ""}
-            </button>
+          <button disabled={!(formik.isValid && formik.dirty)} type="submit">
+            Add {formik.isSubmitting ? " adding new todo..." : ""}
+          </button>
         </form>
-        
+
         {todo.loading ? (
-              <span>Loading Todos.....</span>
-            ) : (
-                <TodoList
-                  todos={todo.todo}
-                  onCompleteChange={completeChangeHandler}
-                />
-            
-            )}
-          </div>
-    
+          <span>Loading Todos.....</span>
+        ) : (
+          <TodoList
+            todos={todo.todo}
+            onCompleteChange={toggleTodoCompleteHandler}
+          />
+        )}
+      </div>
     </>
   );
 }
 
 type ITodoListProp = {
   todos: Todo[];
-  onCompleteChange: (id?: string | number) => void;
+  onCompleteChange: (id: string) => void;
 };
 const TodoList = ({ todos, onCompleteChange }: ITodoListProp) => {
   return (
@@ -216,7 +241,7 @@ const TodoList = ({ todos, onCompleteChange }: ITodoListProp) => {
         <TodoItem
           key={index}
           todo={todo}
-          onCompleteChange={() => onCompleteChange(todo.id)}
+          onCompleteChange={() => onCompleteChange(todo.id as string)}
         />
       ))}
         </div>
@@ -231,7 +256,7 @@ const TodoList = ({ todos, onCompleteChange }: ITodoListProp) => {
 
 type ITodoItemProp = {
     todo: Todo
-    onCompleteChange: (id?: string | number) => void
+    onCompleteChange: (id: string) => void
 }
 const TodoItem = ({ todo, onCompleteChange }: ITodoItemProp) => {
    
@@ -243,7 +268,7 @@ const TodoItem = ({ todo, onCompleteChange }: ITodoItemProp) => {
           type="checkbox"
           name="completionToggle"
           checked={todo.completed}
-          onChange={() => onCompleteChange(todo.id)}
+          onChange={() => onCompleteChange(todo.id as string)}
         />
       </div>
       </>
