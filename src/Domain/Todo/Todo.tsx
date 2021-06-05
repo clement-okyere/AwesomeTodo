@@ -11,24 +11,9 @@ type todoState = {
   loading: boolean
 };
 
-let initial_todos: Todo[] = [
-    {
-    id: 0,
-    name: "make coffe",
-    completed: false,
-  },
-    {
-    id: 1,
-    name: "walk home",
-    completed: false,
-  },
-];
-;
-
 type INITIAL_LOAD = {
   type: "INIT_LOAD";
 };
-
 
 type LOAD_DATA = {
   type: "LOAD_DATA",
