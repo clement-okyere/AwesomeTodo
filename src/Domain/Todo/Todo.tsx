@@ -5,6 +5,8 @@ import { useFormik } from 'formik';
 import axios from "axios";
 //import { uuid } from "uuidv4";
 
+const API_URL = "http://localhost:3001/api/todos";
+
 type todoState = {
   todo: Todo[] | [],
   loading: boolean
@@ -34,11 +36,19 @@ type LOAD_DATA = {
   payload: todoState
 };
 
+type ADD_TODO = {
+  type: "ADD_TODO";
+  payload: todoState;
+};
+
 type DONE_LOAD = {
   type: "DONE_LOAD";
 };
 
-type Action = INITIAL_LOAD | LOAD_DATA | DONE_LOAD;
+type Action = INITIAL_LOAD
+              | LOAD_DATA
+              | DONE_LOAD
+              | ADD_TODO;
 
 const reducer = (state: todoState, action: Action) => {
   switch (action.type) {
@@ -49,10 +59,16 @@ const reducer = (state: todoState, action: Action) => {
       };
 
     case "LOAD_DATA":
-      console.log("data from api", action.payload)
+      console.log("data from api", action.payload);
       return {
         ...action.payload,
         loading: true,
+      };
+
+    case "ADD_TODO":
+      console.log("data from api", action.payload);
+      return {
+        ...action.payload
       };
 
     case "DONE_LOAD":
@@ -69,12 +85,33 @@ const TodoComponent = () => {
     loading: false,
   });
 
+  const addTodoHandler = async (todoValue: Todo) => {
+
+    try {
+      const {data} = await axios.post(API_URL, todoValue);
+      console.log("response from api", data);
+      dispatch({
+        type: "ADD_TODO",
+        payload: {
+          "todo": [...todo.todo, todoValue],
+          loading: false
+        },
+      });    
+    }
+    catch (err) {
+      console.log("An error occurred", err);
+    }
+
+
+  }
+
+
   const fetchTodos = async () => {
     try {
        dispatch({
          type: "INIT_LOAD"
        });     
-      const {data} = await axios.get("http://localhost:3001/api/todos");
+      const {data} = await axios.get(API_URL);
       
       //update todoState with data from api
       const todos: Todo[] = data.map((todo) => {
@@ -110,7 +147,7 @@ const TodoComponent = () => {
     fetchTodos();
   }, []);
 
-  const completeChangeHandler = (id: string| number) => {
+  const completeChangeHandler = (id?: string| number) => {
       // const updatedTodo: Todo[] = todos.map((todo: Todo) => {
       //     if (todo.id === id)
       //         return { ...todo, completed: !todo.completed };
@@ -127,17 +164,18 @@ const TodoComponent = () => {
         completed: false,
       },
       validationSchema: todoValidationSchema,
-      onSubmit: (values, {resetForm}) => {
-        //  let lastTodoId = todo.todo.length;
-        //  let lastTodo: Todo = {
-        //    id: (lastTodoId += 1),
-        //    name: values.name,
-        //    completed: false,
-        //  };
-
-        //  let updateTodos = [...todos, lastTodo];
-        //  setTodos(updateTodos);
-        resetForm();
+      onSubmit: async (values, { resetForm,setSubmitting }) => {
+        try {
+          setSubmitting(true)
+          const { name, completed } = values;
+          await addTodoHandler({ name, completed })
+          setSubmitting(false);
+          resetForm();
+        }
+        catch (err) {
+          setSubmitting(false);
+          console.log("err", err);
+        }
       },
     });
      
@@ -161,7 +199,7 @@ const TodoComponent = () => {
             ) : null}
 
             <button disabled={!(formik.isValid && formik.dirty)} type="submit">
-              Add
+              Add {formik.isSubmitting ?  " adding new todo...": ""}
             </button>
         </form>
         
@@ -182,7 +220,7 @@ const TodoComponent = () => {
 
 type ITodoListProp = {
   todos: Todo[];
-  onCompleteChange: (id: string | number) => void;
+  onCompleteChange: (id?: string | number) => void;
 };
 const TodoList = ({ todos, onCompleteChange }: ITodoListProp) => {
   return (
@@ -209,7 +247,7 @@ const TodoList = ({ todos, onCompleteChange }: ITodoListProp) => {
 
 type ITodoItemProp = {
     todo: Todo
-    onCompleteChange: (id: string | number) => void
+    onCompleteChange: (id?: string | number) => void
 }
 const TodoItem = ({ todo, onCompleteChange }: ITodoItemProp) => {
    
