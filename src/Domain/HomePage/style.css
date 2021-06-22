@@ -1,0 +1,45 @@
+.main {
+    display: grid;
+    background-color: #ddf4ff;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+}
+
+.description {
+    background-color: rgba(230, 241, 237, 0.384);
+    padding: 0.5em;
+    display: flex;  
+}
+
+.description .title {
+    margin: 0 .2em 0 0.2em;
+    align-self: flex-start;
+    padding: 1em;; 
+    margin-top: 0px;  
+} 
+
+.description .title h1{
+  margin: 0;
+  width: max-content;  
+} 
+
+.description .about {
+    font-size: 1.5em;  
+    align-self: center; 
+} 
+
+.sub_description {
+    padding: 10px;
+    font-size: 0.6em;
+}
+
+.feature_image {
+    background-color: bisque;
+}
+
+.getting_started {
+    background-color: black;
+    height: 3em;
+    width: 7em;
+    color: white;
+}
