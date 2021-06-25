@@ -1,15 +1,18 @@
 .main {
     display: grid;
     background-color: #ddf4ff;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.2fr 0.8fr;
     height: 100vh;
+    color: white;
 }
 
 .description {
-    background-color: rgba(230, 241, 237, 0.384);
+    /* background-color: rgba(230, 241, 237, 0.384); */
+    background-color: teal;
     padding: 0.5em;
     display: flex;  
 }
+
 
 .description .title {
     margin: 0 .2em 0 0.2em;
@@ -17,10 +20,17 @@
     padding: 1em;; 
     margin-top: 0px;  
 } 
+@keyframes fadeIn {
+    0% {opacity: 0;}
+    25% {opacity: 0.5;}
+    50% {opacity: 0.75;}
+    100% {opacity: 1.0;}
+}
 
 .description .title h1{
   margin: 0;
   width: max-content;  
+  animation: fadeIn 5s linear;
 } 
 
 .description .about {
@@ -35,7 +45,13 @@
 
 .feature_image {
     background-color: bisque;
+    background-image: url("../../assets/images/feature_image_homepage2.jpg");
+    background-size: cover;
+    /* background-position: center center; */
+     background-repeat: no-repeat;
 }
+
+
 
 .getting_started {
     background-color: black;
