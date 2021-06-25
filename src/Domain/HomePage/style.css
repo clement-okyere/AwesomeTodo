@@ -8,7 +8,7 @@
 
 .description {
     /* background-color: rgba(230, 241, 237, 0.384); */
-    background-color: teal;
+    background-color: rgb(10, 1, 10);
     padding: 0.5em;
     display: flex;  
 }
@@ -45,9 +45,8 @@
 
 .feature_image {
     background-color: bisque;
-    background-image: url("../../assets/images/feature_image_homepage2.jpg");
+    background-image: url("../../assets/images/feature_image_homepage.jpg");
     background-size: cover;
-    /* background-position: center center; */
      background-repeat: no-repeat;
 }
 
