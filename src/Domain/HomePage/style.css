@@ -1,6 +1,5 @@
 .main {
     display: grid;
-    background-color: #ddf4ff;
     grid-template-columns: 1.2fr 0.8fr;
     height: 100vh;
     color: white;
@@ -44,7 +43,6 @@
 }
 
 .feature_image {
-    background-color: bisque;
     background-image: url("../../assets/images/feature_image_homepage.jpg");
     background-size: cover;
      background-repeat: no-repeat;

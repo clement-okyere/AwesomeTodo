@@ -1,0 +1,136 @@
+.login_page {
+    display: flex;
+    background-color: rgb(22,29,34);
+    justify-content: center;
+    align-content: center;
+    height: 100vh; 
+}
+
+.left {
+    display: block;
+    background-color: #FFFEFF;
+    padding: 2em;
+    padding-left: 4em;
+    padding-right: 4em;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex: 0.8;  
+}
+
+.sub_left {
+    align-self: center;
+    width: 500px;
+}
+
+.left .heading h2 {
+    font-size: 1.8em;
+    margin-bottom: 0.2em;
+}
+
+.left span.subheading {
+    display: block;
+    font-size: 0.8em;
+    margin-bottom: 2em;
+    color: rgb(189,187,199);
+}
+
+.social_login {
+    width: 100%;
+    margin-bottom: 1.1em;
+}
+.social_login  button{
+    width: 100%;
+    background-color: white;
+    padding: 1.2em;
+    border-radius: 1.2em;
+    background-image: url("../../assets/images/icons8-google-48.png");
+    background-repeat: no-repeat;
+    background-position: 37% 35%;
+    background-size: 5.8%;
+    text-align: center;
+    border: 1px solid rgb(189,187,199);
+    font-weight: bold;
+    /* height: ; */
+    font-size: 0.6em;
+}
+
+.email_sign_in h4 {
+   width: 100%; 
+   text-align: center; 
+   border-bottom: 1px solid rgb(189,187,199); 
+   line-height: 0.1em;
+   margin: 10px 0 20px; 
+   font-weight: normal;
+} 
+
+.email_sign_in h4 span { 
+    background:#fff; 
+    padding:0 10px; 
+    color: rgb(189,187,199);
+    font-size: 0.8em;
+}
+
+
+.form_group {
+    margin: 0 0 0.6em 0;
+}
+.email_sign_in .form_group label {
+    display: block;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+.email_sign_in .form_group input {
+    display: block;
+    width: 100%;
+    padding: 0.7em;
+    border: 1px solid rgb(189,187,199) !important;
+    border-radius: 2em;
+    margin: 0.2em 0 0.2em 0em;
+}
+
+.email_sign_in .form_group input:focus {
+    display: block;
+    width: 100%;
+    padding: 0.3em;
+    outline: none;
+    border: 1px solid black !important;
+    border-radius: 2em;
+    margin: 0.2em 0 0.2em 0em;
+}
+
+.email_sign_in .miscellaneous {
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0.4em 0 0.6em 0em;
+}
+
+.forgot_password {
+    color: rgb(85,26,139);
+}
+
+.email_sign_in .submit_btn button {
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 1em;;
+    border-radius: 2em;
+    margin: 0.2em 0 0.2em 0em;
+}
+
+.email_sign_in .signup_info  {
+    padding: 1em;;
+}
+
+
+.right {
+    background: black;
+    background-image: url("../../assets/images/login_feature_image.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50% 0;
+    flex: 1.2;
+}
