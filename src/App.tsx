@@ -5,6 +5,7 @@ import './App.css';
 import { Switch, Route, } from "react-router-dom";
 import HomePage from "./Domain/HomePage";
 import LoginPage from "./Domain/Login";
+import SignupPage from "./Domain/Signup";
 
 function App() {
   return (
@@ -12,6 +13,10 @@ function App() {
       <Switch>
         <Route path="/login">
           <LoginPage />
+        </Route>
+
+        <Route path="/signup">
+          <SignupPage />
         </Route>
 
         <Route path="/dashboard">
