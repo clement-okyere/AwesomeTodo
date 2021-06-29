@@ -1,4 +1,4 @@
-.login_page {
+.signup_page {
     display: flex;
     background-color: rgb(22,29,34);
     justify-content: center;
@@ -35,11 +35,11 @@
     color: rgb(189,187,199);
 }
 
-.social_login {
+.social_signup {
     width: 100%;
     margin-bottom: 1.1em;
 }
-.social_login  button{
+.social_signup  button{
     width: 100%;
     background-color: white;
     padding: 1.2em;
@@ -55,7 +55,7 @@
     font-size: 0.6em;
 }
 
-.email_sign_in h4 {
+.email_signup h4 {
    width: 100%; 
    text-align: center; 
    border-bottom: 1px solid rgb(189,187,199); 
@@ -64,7 +64,7 @@
    font-weight: normal;
 } 
 
-.email_sign_in h4 span { 
+.email_signup h4 span { 
     background:#fff; 
     padding:0 10px; 
     color: rgb(189,187,199);
@@ -81,7 +81,7 @@
     font-size: 0.8em;
 }
 
-.email_sign_in .form_group input {
+.email_signup .form_group input {
     display: block;
     width: 100%;
     padding: 0.7em;
@@ -90,7 +90,7 @@
     margin: 0.2em 0 0.2em 0em;
 }
 
-.email_sign_in .form_group input:focus {
+.email_signup .form_group input:focus {
     display: block;
     width: 100%;
     padding: 0.7em;
@@ -100,7 +100,7 @@
     margin: 0.2em 0 0.2em 0em;
 }
 
-.email_sign_in .miscellaneous {
+.email_signup .miscellaneous {
     display: flex; 
     flex-direction: row;
     justify-content: space-between;
@@ -108,11 +108,16 @@
     margin: 0.4em 0 0.6em 0em;
 }
 
-.forgot_password {
+.t_and_c {
+     margin: 0.4em 0 0.6em 0em;
+}
+
+.t_and_c a{
     color: rgb(85,26,139);
 }
 
-.email_sign_in .submit_btn button {
+
+.email_signup .submit_btn button {
     width: 100%;
     background-color: black;
     color: white;
@@ -121,7 +126,7 @@
     margin: 0.2em 0 0.2em 0em;
 }
 
-.email_sign_in .signup_info  {
+.email_signup .login_info  {
     padding: 1em;;
 }
 
