@@ -5,6 +5,7 @@ import { logInValidationSchema } from "../../utils/schema";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
 import './style.css';
+import { getToken } from "../../utils/helpers";
 
 interface Values {
   email: string;
@@ -13,7 +14,13 @@ interface Values {
 
 
 const LoginPage = () => {
-   const history = useHistory();
+  const history = useHistory();
+  
+  const token = getToken("token");
+  
+    React.useEffect(() => {
+      if (token) history.push("/dashboard");
+    });
 
    const dashboardClickHandler = () => {
      history.push("/dashboard");

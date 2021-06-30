@@ -5,6 +5,9 @@ import Input from "../../Components/Input";
 import Button from "../../Components/Button";
 import "./style.css";
 import { Form, Formik, FormikHelpers, useFormikContext } from "formik";
+import axios from "axios";
+import { setTokenSourceMapRange } from "typescript";
+import { getToken, setToken } from "../../utils/helpers";
 
 interface Values {
   firstname: string;
@@ -20,11 +23,31 @@ type IMySignUpFormProps = {
 
 const SignupPage = () => {
   const history = useHistory();
+  const token = getToken("token");
+
+  React.useEffect(() => {
+    if (token)
+      history.push("/dashboard");
+  })
 
   const dashboardClickHandler = () => {
     history.push("/dashboard");
   };
 
+  const submitsignUpFormHandler = async (values: Values) => {
+    try {
+      console.log("values", values);
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_TODO_API}/auth/signup`,
+        values
+      );
+      setToken("token", data);
+      history.push("/dashboard");
+    }
+    catch (err) {
+      console.log("an error occurred", err);
+    }
+  }
 
   return (
     <div className="signup_page">
@@ -54,14 +77,13 @@ const SignupPage = () => {
                 agreement: false,
               }}
               validationSchema={signUpValidationSchema}
-              onSubmit={(
+              onSubmit={async (
                 values: Values,
                 { setSubmitting }: FormikHelpers<Values>
               ) => {
-                setTimeout(() => {
-                  alert(JSON.stringify(values, null, 2));
-                  setSubmitting(false);
-                }, 500);
+                setSubmitting(true);
+                await submitsignUpFormHandler(values);
+                setSubmitting(false);
               }}
             >
               <Form>
