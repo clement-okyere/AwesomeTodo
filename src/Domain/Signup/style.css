@@ -126,6 +126,16 @@
     margin: 0.2em 0 0.2em 0em;
 }
 
+.email_signup .submit_btn button:disabled {
+    width: 100%;
+    background-color: grey;
+    color: white;
+    padding: 1em;;
+    border-radius: 2em;
+    margin: 0.2em 0 0.2em 0em;
+}
+
+
 .email_signup .login_info  {
     padding: 1em;;
 }

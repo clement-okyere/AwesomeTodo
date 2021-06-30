@@ -1,7 +1,9 @@
 import { Form, Formik, FormikHelpers } from "formik";
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { logInValidationSchema } from "../../utils/schema";
 import Input from "../../Components/Input";
+import Button from "../../Components/Button";
 import './style.css';
 
 interface Values {
@@ -26,6 +28,7 @@ const LoginPage = () => {
                 email: "",
                 password: "",
               }}
+              validationSchema={logInValidationSchema}
               onSubmit={(
                 values: Values,
                 { setSubmitting }: FormikHelpers<Values>
@@ -56,7 +59,7 @@ const LoginPage = () => {
 
                     <Input
                       label="Email*"
-                      type="email"
+                      type="text"
                       id="email"
                       placeholder="email"
                       cssclass="form_group"
@@ -65,7 +68,7 @@ const LoginPage = () => {
                       value={formik.values.email}
                     />
                     {formik.touched.email && formik.errors.email ? (
-                      <div>{formik.errors.email}</div>
+                      <div className="error">{formik.errors.email}</div>
                     ) : null}
 
                     <Input
@@ -79,7 +82,7 @@ const LoginPage = () => {
                       value={formik.values.password}
                     />
                     {formik.touched.password && formik.errors.password ? (
-                      <div>{formik.errors.password}</div>
+                      <div className="error">{formik.errors.password}</div>
                     ) : null}
 
                     <div className="miscellaneous">
@@ -90,14 +93,14 @@ const LoginPage = () => {
                       <span className="forgot_password">Forgot password?</span>
                     </div>
 
-                    <div className="submit_btn">
-                      <button
-                        type="submit"
-                        // onClick={dashboardClickHandler}
-                      >
-                        Login
-                      </button>
-                    </div>
+                    <Button
+                      type="submit"
+                      // clickHandler={dashboardClickHandler}
+                      cssClass="submit_btn"
+                      disabled={!(formik.isValid && formik.dirty)}
+                    >
+                      Login
+                    </Button>
 
                     <div className="signup_info">
                       <span>
