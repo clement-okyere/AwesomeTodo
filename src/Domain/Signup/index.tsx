@@ -3,11 +3,12 @@ import { useHistory, Link } from "react-router-dom";
 import { signUpValidationSchema } from "../../utils/schema";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
+import Dashboard from "../../Containers/Dashboard";
 import "./style.css";
 import { Form, Formik, FormikHelpers, useFormikContext } from "formik";
 import axios from "axios";
 import { setTokenSourceMapRange } from "typescript";
-import { getToken, setToken } from "../../utils/helpers";
+import { getItem, setItem } from "../../utils/helpers";
 
 interface Values {
   firstname: string;
@@ -23,7 +24,7 @@ type IMySignUpFormProps = {
 
 const SignupPage = () => {
   const history = useHistory();
-  const token = getToken("token");
+  const token = getItem("token");
 
   React.useEffect(() => {
     if (token)
@@ -41,7 +42,7 @@ const SignupPage = () => {
         `${process.env.REACT_APP_TODO_API}/auth/signup`,
         values
       );
-      setToken("token", data);
+      setItem("token", data);
       history.push("/dashboard");
     }
     catch (err) {
