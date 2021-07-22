@@ -6,6 +6,7 @@ import { Switch, Route, } from "react-router-dom";
 import HomePage from "./Domain/HomePage";
 import LoginPage from "./Domain/Login";
 import SignupPage from "./Domain/Signup";
+import Dashboard from "./Containers/Dashboard";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
         </Route>
 
         <Route path="/dashboard">
-          <Todo />
+          <Dashboard />
         </Route>
 
         <Route path="/" exact>
