@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import ProfileAvatar from "../../Components/ProfileAvatar";
 import { getItem, removeItem } from "../../utils/helpers";
 import ConfirmationDialog from "../../Components/Dialog/Confirmation";
+import Main from "./Components/Main";
 
 
 const StyledSearch = styled(Search)`
@@ -35,6 +36,11 @@ const StyledConfirmationDialog = styled(ConfirmationDialog)`
   z-index: 1000;
   border-radius: 2em;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+`;
+
+const StyledMain = styled(Main)`
+  display: flex;
+  height: 100%;
 `;
 
 
@@ -92,10 +98,8 @@ React.useEffect(() => {
             </ul>
           </header>
           <article className="page-body">
-            <p>
-              Main page content here, add more if you want to see the footer
-              push down.
-            </p>
+            {/* Content Area Here */}
+            <StyledMain />
           </article>
           <footer className="footer">
             Copyright &#169; 2021 Cleeoworld Innovation All rights reserved
