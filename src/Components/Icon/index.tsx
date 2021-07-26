@@ -1,18 +1,22 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { SizeProp } from "@fortawesome/fontawesome-svg-core";
 
 
 type IconProp = {
     className?: string;
     icon: IconDefinition;
+    iconSize?: SizeProp
 }
 
 
-const Icon = ({className, icon}: IconProp) => (
+const Icon = ({ className,
+                 icon,
+               iconSize = "1x" }: IconProp) =>
+(
     <span className={className}>
-        <span>Hello</span>
-        <FontAwesomeIcon icon={icon} />
+        <FontAwesomeIcon icon={icon} size={iconSize}/>
     </span>
 );
   
