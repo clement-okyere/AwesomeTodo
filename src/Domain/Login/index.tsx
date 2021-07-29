@@ -5,7 +5,9 @@ import { logInValidationSchema } from "../../utils/schema";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
 import './style.css';
-import { getItem } from "../../utils/helpers";
+import { getItem, setItem } from "../../utils/helpers";
+import GoogleLogin from "react-google-login";
+import axios from "axios";
 
 interface Values {
   email: string;
@@ -22,9 +24,28 @@ const LoginPage = () => {
       if (token) history.push("/dashboard");
     });
 
-   const dashboardClickHandler = () => {
-     history.push("/dashboard");
-   };
+   const accountCreateClickHandler = () => {
+     history.push("/signup");
+  };
+  
+  const handleLogin = async (googleData) => {
+    const res =  axios({
+      url: `${process.env.REACT_APP_TODO_API}/auth/login/google`,
+      method: "POST",
+      data: { token: googleData.tokenId },
+    }).then(response => {
+      // console.log(response, response.data);
+      if (response.data) {
+        setItem("token", response.data);
+        history.push("/dashboard");
+      }
+    })
+      .catch((err) => {
+        console.log("an error occurred");
+    })
+
+    // store returned user somehow
+  };
 
     return (
       <div className="login_page">
@@ -56,7 +77,25 @@ const LoginPage = () => {
                   </div>
 
                   <div className="social_login">
-                    <button>Sign in with Google</button>
+                    {/* <button>Sign in with Google</button> */}
+                    <GoogleLogin
+                      clientId={
+                        process.env.REACT_APP_GOOGLE_CLIENT_ID as string
+                      }
+                      render={(renderProps) => (
+                        <button
+                          onClick={renderProps.onClick}
+                          disabled={renderProps.disabled}
+                        >
+                          {" "}
+                          Sign in with Google
+                        </button>
+                      )}
+                      buttonText="Log in with Google"
+                      onSuccess={handleLogin}
+                      onFailure={handleLogin}
+                      cookiePolicy={"single_host_origin"}
+                    />
                   </div>
 
                   <div className="email_sign_in">
@@ -111,7 +150,10 @@ const LoginPage = () => {
 
                     <div className="signup_info">
                       <span>
-                        Not registered yet? <a href="#">Create an account</a>
+                        Not registered yet? &nbsp;
+                        <a href="#" onClick={accountCreateClickHandler}>
+                          Create an account
+                        </a>
                       </span>
                     </div>
                   </div>

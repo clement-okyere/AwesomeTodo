@@ -13,7 +13,7 @@ type IMainProps = {
 
 const StyledNav = styled.div`
   flex: 1;
-  background: #dfe1ee;
+  background: #ebebf5;
   padding: 2em 4em 1em 0em;
 `;
 
@@ -30,6 +30,7 @@ const StyledMenuItem = styled(MenuItem)`
   display: flex;
   flex-direction: row;
   margin-bottom: 0.5em;
+  color: black;
 `;
 
 

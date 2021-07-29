@@ -35,6 +35,10 @@ const SignupPage = () => {
     history.push("/dashboard");
   };
 
+  const signInClickHandler = () => {
+      history.push("/login");
+  };
+
   const submitsignUpFormHandler = async (values: Values) => {
     try {
       console.log("values", values);
@@ -94,7 +98,13 @@ const SignupPage = () => {
 
             <div className="login_info">
               <span>
-                Already have an account <a href="/signin">Sign in</a>
+                Already have an account&nbsp;
+                <a
+                  href="#"
+                  onClick={signInClickHandler}
+                >
+                  Sign in
+                </a>
               </span>
             </div>
           </div>

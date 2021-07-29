@@ -10,6 +10,7 @@ type IMenuItemProp = {
 
 const StyledLink = styled(Link)`
   text-decoration: none;
+  color: black;
 `;
 
 const StyledNavIcon = styled(Icon)`
