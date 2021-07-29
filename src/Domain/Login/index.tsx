@@ -43,8 +43,6 @@ const LoginPage = () => {
       .catch((err) => {
         console.log("an error occurred");
     })
-
-    // store returned user somehow
   };
 
     return (
