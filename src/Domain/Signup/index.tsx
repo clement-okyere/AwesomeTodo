@@ -9,6 +9,7 @@ import { Form, Formik, FormikHelpers, useFormikContext } from "formik";
 import axios from "axios";
 import { setTokenSourceMapRange } from "typescript";
 import { getItem, setItem } from "../../utils/helpers";
+import GoogleLogin from "react-google-login";
 
 interface Values {
   firstname: string;
@@ -39,6 +40,24 @@ const SignupPage = () => {
       history.push("/login");
   };
 
+    const handleSignUp = async (googleData) => {
+      const res = axios({
+        url: `${process.env.REACT_APP_TODO_API}/auth/signup/google`,
+        method: "POST",
+        data: { token: googleData.tokenId },
+      })
+        .then((response) => {
+          // console.log(response, response.data);
+          if (response.data) {
+            setItem("token", response.data);
+            history.push("/dashboard");
+          }
+        })
+        .catch((err) => {
+          console.log("an error occurred");
+        });
+    };
+
   const submitsignUpFormHandler = async (values: Values) => {
     try {
       console.log("values", values);
@@ -66,7 +85,22 @@ const SignupPage = () => {
           </div>
 
           <div className="social_signup">
-            <button>Sign up with Google</button>
+            <GoogleLogin
+              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID as string}
+              render={(renderProps) => (
+                <button
+                  onClick={renderProps.onClick}
+                  disabled={renderProps.disabled}
+                >
+                  {" "}
+                  Sign up with Google
+                </button>
+              )}
+              buttonText="Sign Up with Google"
+              onSuccess={handleSignUp}
+              onFailure={handleSignUp}
+              cookiePolicy={"single_host_origin"}
+            />
           </div>
 
           <div className="email_signup">
@@ -99,10 +133,7 @@ const SignupPage = () => {
             <div className="login_info">
               <span>
                 Already have an account&nbsp;
-                <a
-                  href="#"
-                  onClick={signInClickHandler}
-                >
+                <a href="#" onClick={signInClickHandler}>
                   Sign in
                 </a>
               </span>
