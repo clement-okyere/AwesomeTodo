@@ -1,30 +1,29 @@
 import React from "react";
 
 type IButtonProps = {
-  cssClass: string;
-  type: "button" | "submit" | "reset";
+  className?: string;
+  type?: "button" | "submit" | "reset";
   clickHandler?: (event: React.MouseEvent<HTMLButtonElement> | void) => void;
   children?: React.ReactNode;
-  disabled: boolean;
+  disabled?: boolean;
 };
 
-const Button = ({ cssClass,
-       type,
+const Button = ({ className: cssClass,
+       type = "button",
        clickHandler,
        children,
       disabled = false
 }: IButtonProps) => {
-    return(
-     <div className={cssClass}>
-      <button
-        type={type}
-        onClick={clickHandler}
-        disabled={disabled}
+    return (
+        <button
+          className={cssClass}
+          type={type}
+          onClick={clickHandler}
+          disabled={disabled}
         >
           {children}
-         </button>
-        </div>
-    )
+        </button>
+    );
 }
 
 export default Button;

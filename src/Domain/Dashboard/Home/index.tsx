@@ -48,11 +48,12 @@ const Todos: Todo[] = [
 ];
 
 const RecentActivities = ({ className, todos }: IRecentActivitiesProp) => {
+
   return (
    <>
       {
         todos.map((todo: Todo, index: number) => (
-            <div className={className}>
+            <div className={className} key={index}>
                <span><Icon icon={ faTasks } /></span>
                <span>2021-10-01 11:10:03</span>
                <span>Name</span>

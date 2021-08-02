@@ -1,5 +1,4 @@
 import React from "react";
-import { date } from "yup/lib/locale";
 import styled from "styled-components";
 import "./style.css";
 import { Search } from "../../Components/Search";

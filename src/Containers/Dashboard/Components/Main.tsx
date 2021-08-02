@@ -1,8 +1,10 @@
-import React from "react";
-import { Link, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 import routes from "../../../utils/routes";
 import MenuItem from "../../../Components/MenuItem"
+import Home from "../../../Domain/Dashboard/Home";
+import Category from "../../../Domain/Category";
+import Todo from "../../../Domain/TodoComponent";
 
 
 
@@ -40,21 +42,33 @@ const Main = ({ className }: IMainProps) => {
     <div className={className}>
       <StyledNav>
         <StyledNavUl>
-                  {routes.map((route, index) =>
-                      <StyledMenuItem
-                          route={route}
-                      />
-                  )}
+          {routes.map((route, index) => (
+            <StyledMenuItem key={index} route={route} />
+          ))}
         </StyledNavUl>
       </StyledNav>
 
       <StyledContent>
         <Switch>
-          {routes.map((route, index) => (
-            <Route key={index} path={route.path} exact={route.exact}>
-              {route.component}
+          {/* Todo: Fix hooks not working in dynamically rendered routes issue */}
+          {/* {routes.map((route, index) => (
+           <Route key={index} path={route.path}
+            exact={route.exact}
+             />
             </Route>
-          ))}
+          ))} */}
+
+          <Route path="/dashboard/todos" exact={true}>
+            <Todo />
+          </Route>
+
+          <Route path="/dashboard/categories">
+            <Category />
+          </Route>
+
+          <Route path="/dashboard/">
+            <Home />
+          </Route>
         </Switch>
       </StyledContent>
     </div>
