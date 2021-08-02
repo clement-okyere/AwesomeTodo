@@ -26,10 +26,25 @@ const LoginPage = () => {
 
    const accountCreateClickHandler = () => {
      history.push("/signup");
-  };
+    };
+  
+   const submitLoginFormHandler = async (values: Values) => {
+      try {
+        const { data } = await axios.post(
+          `${process.env.REACT_APP_TODO_API}/auth/login`,
+          values
+        );
+        setItem("token", data);
+        history.push("/dashboard");
+      } catch (err) {
+        console.log("an error occurred", err);
+      }
+    };
+  
+  
   
   const handleLogin = async (googleData) => {
-    const res =  axios({
+     axios({
       url: `${process.env.REACT_APP_TODO_API}/auth/login/google`,
       method: "POST",
       data: { token: googleData.tokenId },
@@ -55,14 +70,13 @@ const LoginPage = () => {
                 password: "",
               }}
               validationSchema={logInValidationSchema}
-              onSubmit={(
+               onSubmit={async (
                 values: Values,
                 { setSubmitting }: FormikHelpers<Values>
               ) => {
-                setTimeout(() => {
-                  alert(JSON.stringify(values, null, 2));
-                  setSubmitting(false);
-                }, 500);
+                setSubmitting(true);
+                await submitLoginFormHandler(values);
+                setSubmitting(false);
               }}
             >
               {(formik) => (
@@ -140,7 +154,7 @@ const LoginPage = () => {
                     <Button
                       type="submit"
                       // clickHandler={dashboardClickHandler}
-                      cssClass="submit_btn"
+                      className="submit_btn"
                       disabled={!(formik.isValid && formik.dirty)}
                     >
                       Login

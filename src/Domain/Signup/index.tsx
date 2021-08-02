@@ -1,13 +1,11 @@
 import React from "react";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { signUpValidationSchema } from "../../utils/schema";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
-import Dashboard from "../../Containers/Dashboard";
 import "./style.css";
 import { Form, Formik, FormikHelpers, useFormikContext } from "formik";
 import axios from "axios";
-import { setTokenSourceMapRange } from "typescript";
 import { getItem, setItem } from "../../utils/helpers";
 import GoogleLogin from "react-google-login";
 
@@ -240,7 +238,7 @@ export const MySignUpForm = ({ clickHandler }: IMySignUpFormProps) => {
                   <Button
                     type="submit"
                     // clickHandler={clickHandler}
-                    cssClass="submit_btn"
+                    className="submit_btn"
                     disabled={!(isValid && dirty)}
                   >
                     Login
